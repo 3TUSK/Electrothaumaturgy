@@ -16,8 +16,24 @@ public class ElectricScribingTools extends Item implements IElectricItem, ISpeci
         // TODO We gonna have to figure out how to trick Thaumcraft to consume electricity, not item durability
         // TODO Probably, we need to file an issue ticket, if we really want a nice and clean implementation
         int disChargeAmount = 100 * (damage - this.getDamage(stack));
-        ElectricItem.manager.discharge(stack, disChargeAmount, 1, false, false, false);
+        if (disChargeAmount > 0) {
+            ElectricItem.manager.discharge(stack, disChargeAmount, 1, false, false, false);
+        }
         super.setDamage(stack, damage);
+    }
+
+    @Override
+    public int getDamage(ItemStack item) {
+        return 100 - (int)(ElectricItem.rawManager.getCharge(item) / 100);
+    }
+
+    public int getMaxDamage(ItemStack item) {
+        return 100;
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return true;
     }
 
     @Override
