@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "electrothaumaturgy",
+    "name": "ElectroThaumaturgy",
+    "description": "What could goes wrong with this one!?",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url" : "https://github.com/3TUSK/ElectroThaumaturgy",
+    "authorList": ["3TUSK"],
+    "credits": "",
+    "parent": "",
+    "useDependencyInformation": true,
+    "requiredMods": ["ic2", "thaumcraft"],
+    "dependencies": ["jei"]
+  }
+]

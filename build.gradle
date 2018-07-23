@@ -1,0 +1,75 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+    }
+}
+
+apply plugin: 'idea'
+apply plugin: 'net.minecraftforge.gradle.forge'
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+
+version = "${version_major}.${version_minor}.${version_patch}"
+group = "info.tritusk"
+archivesBaseName = "ElectroThaumaturgy"
+
+repositories {
+    maven {
+        name = "jei"
+        url = "http://dvs1.progwml6.com/files/maven"
+    }
+    maven {
+        name = "ic2"
+        url = "http://maven.ic2.player.to"
+    }
+    maven {
+        name = "CurseForge"
+        url = "http://minecraft.curseforge.com/api/maven/"
+    }
+}
+
+minecraft {
+    version = "${mc_ver}-${forge_ver}"
+    runDir = "run"
+
+    mappings = "${mapping_ver}"
+    
+    replace "@VERSION@", project.version
+}
+
+jar {
+    manifest {
+        attributes 'Maven-Artifact': "${project.group}:${project.archivesBaseName}:${project.version}"
+        attributes 'Timestamp': System.currentTimeMillis()
+    }
+}
+
+dependencies {
+    deobfCompile "net.industrial-craft:industrialcraft-2:${ic2_ver}-ex112"
+
+    deobfCompile "mezz.jei:jei_${mc_ver}:${jei_ver}"
+    
+    deobfCompile "baubles:Baubles:1.12:${baubles_ver}"
+    deobfCompile "thaumcraft:Thaumcraft:${mc_ver}:${tc_ver}"
+}
+
+processResources {
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}
