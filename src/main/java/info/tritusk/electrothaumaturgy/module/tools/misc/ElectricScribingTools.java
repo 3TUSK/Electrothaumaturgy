@@ -15,6 +15,9 @@ public class ElectricScribingTools extends Item implements IElectricItem, ISpeci
     public void setDamage(ItemStack stack, int damage) {
         // TODO We gonna have to figure out how to trick Thaumcraft to consume electricity, not item durability
         // TODO Probably, we need to file an issue ticket, if we really want a nice and clean implementation
+        int disChargeAmount = 100 * (damage - this.getDamage(stack));
+        ElectricItem.manager.discharge(stack, disChargeAmount, 1, false, false, false);
+        super.setDamage(stack, damage);
     }
 
     @Override
@@ -39,7 +42,7 @@ public class ElectricScribingTools extends Item implements IElectricItem, ISpeci
 
     @Override
     public double getTransferLimit(ItemStack itemStack) {
-        return 32;
+        return 50;
     }
 
     static final class ElectricScribingToolManager implements IElectricItemManager {
@@ -49,49 +52,52 @@ public class ElectricScribingTools extends Item implements IElectricItem, ISpeci
         private ElectricScribingToolManager() {}
 
         @Override
-        public double charge(ItemStack itemStack, double v, int i, boolean b, boolean b1) {
-            // TODO Also mutate item damage
-            return 0;
+        public double charge(ItemStack item, double amount, int tier, boolean ignoreTransferLimit, boolean simulate) {
+            double charged = ElectricItem.rawManager.charge(item, amount, tier, ignoreTransferLimit, simulate);
+            if (charged > 0) {
+                item.setItemDamage(item.getItemDamage() - (int)(charged / 100));
+            }
+            return charged;
         }
 
         @Override
-        public double discharge(ItemStack itemStack, double v, int i, boolean b, boolean b1, boolean b2) {
-            return ElectricItem.rawManager.discharge(itemStack, v, i, b, b1, b2);
+        public double discharge(ItemStack item, double amount, int tier, boolean ignoreTransferLimit, boolean externally, boolean simulate) {
+            return ElectricItem.rawManager.discharge(item, amount, tier, ignoreTransferLimit, externally, simulate);
         }
 
         @Override
-        public double getCharge(ItemStack itemStack) {
-            return ElectricItem.rawManager.getCharge(itemStack);
+        public double getCharge(ItemStack item) {
+            return ElectricItem.rawManager.getCharge(item);
         }
 
         @Override
-        public double getMaxCharge(ItemStack itemStack) {
-            return ElectricItem.rawManager.getMaxCharge(itemStack);
+        public double getMaxCharge(ItemStack item) {
+            return ElectricItem.rawManager.getMaxCharge(item);
         }
 
         @Override
-        public boolean canUse(ItemStack itemStack, double v) {
+        public boolean canUse(ItemStack item, double amount) {
             return false; // No-op
         }
 
         @Override
-        public boolean use(ItemStack itemStack, double v, EntityLivingBase entityLivingBase) {
+        public boolean use(ItemStack item, double amount, EntityLivingBase entity) {
             return false; // No-op
         }
 
         @Override
-        public void chargeFromArmor(ItemStack itemStack, EntityLivingBase entityLivingBase) {
+        public void chargeFromArmor(ItemStack item, EntityLivingBase entity) {
             // No-op
         }
 
         @Override
-        public String getToolTip(ItemStack itemStack) {
-            return ElectricItem.rawManager.getToolTip(itemStack);
+        public String getToolTip(ItemStack item) {
+            return ElectricItem.rawManager.getToolTip(item);
         }
 
         @Override
-        public int getTier(ItemStack itemStack) {
-            return ElectricItem.rawManager.getTier(itemStack);
+        public int getTier(ItemStack item) {
+            return ElectricItem.rawManager.getTier(item);
         }
     }
 }
