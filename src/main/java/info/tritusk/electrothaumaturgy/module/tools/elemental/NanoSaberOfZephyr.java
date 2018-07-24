@@ -7,15 +7,21 @@ import ic2.api.item.IElectricItem;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.world.World;
 import thaumcraft.api.ThaumcraftMaterials;
 import thaumcraft.common.lib.enchantment.EnumInfusionEnchantment;
 
 import java.util.Collections;
 
-public class NanoSaberOfZephyr extends AbstractElectricElementalTool implements IElectricItem {
+public final class NanoSaberOfZephyr extends AbstractElectricElementalTool implements IElectricItem {
 
     public NanoSaberOfZephyr() {
         super(6F, 1.5F, ThaumcraftMaterials.TOOLMAT_ELEMENTAL, Collections.emptySet());
@@ -35,6 +41,17 @@ public class NanoSaberOfZephyr extends AbstractElectricElementalTool implements 
         }
 
         return attributes;
+    }
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
+        ItemStack held = playerIn.getHeldItem(handIn);
+        boolean isOpen = held.getTagCompound() != null && held.getTagCompound().getBoolean("activated");
+        if (held.getTagCompound() != null) {
+            held.setTagCompound(new NBTTagCompound());
+        }
+        held.getTagCompound().setBoolean("activated", !isOpen);
+        return ActionResult.newResult(EnumActionResult.SUCCESS, playerIn.getHeldItem(handIn));
     }
 
     @Override
