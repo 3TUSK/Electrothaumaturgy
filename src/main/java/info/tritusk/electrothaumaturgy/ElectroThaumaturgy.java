@@ -1,5 +1,7 @@
 package info.tritusk.electrothaumaturgy;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod(
@@ -13,4 +15,11 @@ public final class ElectroThaumaturgy {
 
     public static final String MOD_ID = "electrothaumaturgy";
     public static final String MOD_NAME = "ElectroThaumaturgy";
+
+    public static final CreativeTabs TAB = new CreativeTabs(MOD_ID) {
+        @Override
+        public ItemStack getTabIconItem() {
+            return ItemStack.EMPTY;
+        }
+    };
 }

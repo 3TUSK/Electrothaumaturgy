@@ -1,9 +1,12 @@
 package info.tritusk.electrothaumaturgy;
 
+import info.tritusk.electrothaumaturgy.module.tools.elemental.ChainsawOfStream;
+import info.tritusk.electrothaumaturgy.module.tools.elemental.DrillOfCore;
+import info.tritusk.electrothaumaturgy.module.tools.elemental.ElectricHoeOfGrowth;
+import info.tritusk.electrothaumaturgy.module.tools.elemental.NanoSaberOfZephyr;
 import info.tritusk.electrothaumaturgy.module.tools.misc.ElectricGoggle;
 import info.tritusk.electrothaumaturgy.module.tools.misc.ElectricScribingTools;
 import info.tritusk.electrothaumaturgy.module.tools.misc.ElectricTravellerBoots;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -20,17 +23,34 @@ public final class ElectroThaumoRegistry {
     public static void onItemRegistration(RegistryEvent.Register<Item> event) {
         event.getRegistry().registerAll(
                 new ElectricGoggle()
-                        .setCreativeTab(CreativeTabs.COMBAT)
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
                         .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "electric_goggle")
                         .setRegistryName(ElectroThaumaturgy.MOD_ID, "electric_goggle"),
                 new ElectricTravellerBoots()
-                        .setCreativeTab(CreativeTabs.COMBAT)
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
                         .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "electric_traveller_boots")
                         .setRegistryName(ElectroThaumaturgy.MOD_ID, "electric_traveller_boots"),
                 new ElectricScribingTools()
-                        .setCreativeTab(CreativeTabs.MISC)
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
                         .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "electric_scribing_tools")
-                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "electric_scribing_tools")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "electric_scribing_tools"),
+
+                new DrillOfCore()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "drill_of_core")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "drill_of_core"),
+                new ChainsawOfStream()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "chainsaw_of_stream")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "chainsaw_of_stream"),
+                new ElectricHoeOfGrowth()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "electric_hoe_of_growth")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "electric_hoe_of_growth"),
+                new NanoSaberOfZephyr()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "nanosaber_of_zephyr")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "nanosaber_of_zephyr")
         );
     }
 }

@@ -1,0 +1,4 @@
+@ParametersAreNonnullByDefault
+package info.tritusk.electrothaumaturgy.module.tools.elemental;
+
+import javax.annotation.ParametersAreNonnullByDefault;
