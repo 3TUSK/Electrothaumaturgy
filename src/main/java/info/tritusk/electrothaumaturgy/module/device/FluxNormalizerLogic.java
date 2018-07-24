@@ -8,14 +8,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidTank;
 import thaumcraft.api.aura.AuraHelper;
 
-public final class VisReplenisherLogic extends TileEntity implements ITickable, IEnergySink {
+public class FluxNormalizerLogic extends TileEntity implements ITickable, IEnergySink {
 
     private static final int MAX_ENERGY = 200000;
 
-    private FluidTank tank = new FluidTank(8000);
+    private FluidTank tank = new FluidTank(1000);
+
+    private float fluxReservoir = 0.0F;
 
     private int energy = 0;
 
@@ -27,16 +30,16 @@ public final class VisReplenisherLogic extends TileEntity implements ITickable, 
             return;
         }
 
-        // 500 EU + 20 mB UU-Matter == 10% chance of restoring 1.0 vis.
-        // TODO Higher price?
-        // TODO: Do we need some flux leakage to balance it? After all, in theory, they are the same thing.
-        if (energy >= 500 && tank.drain(20, false) != null) {
-            energy -= 500;
-            tank.drain(20, true);
-            if (this.getWorld().rand.nextInt(10) == 0) {
-                AuraHelper.addVis(this.getWorld(), this.getPos(), 1F);
+        if (this.getWorld().rand.nextInt(20) == 0 && energy >= 10000) {
+            float currentFlux = AuraHelper.getFlux(this.getWorld(), this.getPos());
+            fluxReservoir += AuraHelper.drainFlux(this.getWorld(), this.getPos(), currentFlux / 2, false);
+            energy -= 10000;
+            if (fluxReservoir >= 20 && this.getWorld().rand.nextInt(5) == 0) {
+                tank.fill(FluidRegistry.getFluidStack("ic2uu_matter", 1), true);
+                fluxReservoir -= 20F;
             }
         }
+
     }
 
     @Override
