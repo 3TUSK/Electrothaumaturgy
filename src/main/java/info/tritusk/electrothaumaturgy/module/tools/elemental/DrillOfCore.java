@@ -26,19 +26,28 @@ public final class DrillOfCore extends AbstractElectricElementalTool implements 
     @Override
     public boolean canHarvestBlock(IBlockState state, ItemStack stack) {
         Material material = state.getMaterial();
-        return (material == Material.ROCK || material == Material.IRON || material == Material.ANVIL) && ElectricItem.manager.canUse(stack, 100);
+        return (material == Material.ROCK || material == Material.IRON || material == Material.ANVIL || material == Material.SNOW || super.canHarvestBlock(state, stack)) && ElectricItem.manager.canUse(stack, 100);
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack stack, IBlockState state) {
+        return ElectricItem.manager.canUse(stack, 100) ? this.canHarvestBlock(state, stack) ? this.efficiency : super.getDestroySpeed(stack, state) : 1F;
     }
 
     @Override
     public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-        // TODO Consume electricity
+        ElectricItem.manager.use(stack, 100, attacker);
         return true;
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase userEntity) {
         if (!worldIn.isRemote && state.getBlockHardness(worldIn, pos) != 0F) {
-            // TODO Consume electricity
+            if (userEntity != null) {
+                ElectricItem.manager.use(stack, 100, userEntity);
+            } else {
+                ElectricItem.manager.discharge(stack, 100, 2, false, false, false);
+            }
         }
         return true;
     }

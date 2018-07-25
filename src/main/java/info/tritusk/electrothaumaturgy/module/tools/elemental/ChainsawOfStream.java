@@ -2,23 +2,30 @@ package info.tritusk.electrothaumaturgy.module.tools.elemental;
 
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
+import info.tritusk.electrothaumaturgy.internal.ItemUtil;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Enchantments;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
+import net.minecraft.stats.StatList;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.common.IShearable;
 import thaumcraft.api.ThaumcraftMaterials;
 import thaumcraft.common.lib.enchantment.EnumInfusionEnchantment;
 
 import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 
 public final class ChainsawOfStream extends AbstractElectricElementalTool implements IElectricItem {
 
@@ -34,31 +41,81 @@ public final class ChainsawOfStream extends AbstractElectricElementalTool implem
         return (material == Material.WOOD || material == Material.LEAVES || material == Material.WEB) && ElectricItem.manager.canUse(stack, 100);
     }
 
-
     @Override
-    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
-        // TODO Consume electricity
-        return true;
+    public float getDestroySpeed(ItemStack stack, IBlockState state) {
+        return ElectricItem.manager.canUse(stack, 100) ? this.canHarvestBlock(state, stack) ? this.efficiency : super.getDestroySpeed(stack, state) : 1F;
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
+    public boolean hitEntity(ItemStack stack, EntityLivingBase target, EntityLivingBase attacker) {
+        ElectricItem.manager.use(stack, 100, attacker);
+        return true;
+    }
+
+    // TODO Handler of Burrowing enchantment is not calling this method, causing chainsaw does not consume electricity when breaking stuff
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World worldIn, IBlockState state, BlockPos pos, EntityLivingBase userEntity) {
         if (!worldIn.isRemote && state.getBlockHardness(worldIn, pos) != 0F) {
-            // TODO Consume electricity
+            if (userEntity != null) {
+                ElectricItem.manager.use(stack, 100, userEntity);
+            } else {
+                ElectricItem.manager.discharge(stack, 100, 2, false, false, false);
+            }
         }
         return true;
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        // TODO Consume electricity
-        return super.onItemUse(player, worldIn, pos, hand, facing, hitX, hitY, hitZ);
+    public boolean itemInteractionForEntity(ItemStack item, EntityPlayer player, EntityLivingBase target, EnumHand hand) {
+        if (player.world.isRemote) {
+            return false;
+        }
+
+        if (target instanceof IShearable) {
+            IShearable shearableTarget = (IShearable)target;
+            BlockPos pos = target.getPosition();
+            if (shearableTarget.isShearable(item, target.world, pos)) {
+                List<ItemStack> result = shearableTarget.onSheared(item, target.world, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item));
+                Random rand = player.getRNG();
+                for (ItemStack drop : result) {
+                    EntityItem droppedItem = target.entityDropItem(drop, 0.5F);
+                    if (droppedItem == null) {
+                        continue;
+                    }
+                    droppedItem.motionX = (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                    droppedItem.motionY = -1.0;
+                    droppedItem.motionZ = (rand.nextFloat() - rand.nextFloat()) * 0.1F;
+                }
+                ElectricItem.manager.use(item, 100, player);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World worldIn, EntityPlayer playerIn, EnumHand handIn) {
-        // TODO Consume electricity
-        return super.onItemRightClick(worldIn, playerIn, handIn);
+    public boolean onBlockStartBreak(ItemStack item, BlockPos pos, EntityPlayer player) {
+        if (player.world.isRemote) {
+            return false;
+        }
+
+        World world = player.world;
+        Block target = world.getBlockState(pos).getBlock();
+        if (target instanceof IShearable) {
+            IShearable shearableTarget = (IShearable)target;
+            if (shearableTarget.isShearable(item, world, pos)) {
+                List<ItemStack> result = shearableTarget.onSheared(item, world, pos, EnchantmentHelper.getEnchantmentLevel(Enchantments.FORTUNE, item));
+                Random rand = player.getRNG();
+                for (ItemStack drop : result) {
+                    ItemUtil.dropItem(world, pos, drop);
+                }
+                ElectricItem.manager.use(item, 100, player);
+                player.addStat(StatList.getBlockStats(target));
+                world.setBlockState(pos, Blocks.AIR.getDefaultState(), 8 | 2 | 1);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Override
