@@ -16,7 +16,10 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.event.ForgeEventFactory;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.entity.player.UseHoeEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import thaumcraft.api.ThaumcraftMaterials;
 
 import java.util.Collections;
@@ -24,7 +27,7 @@ import java.util.Collections;
 public final class ElectricHoeOfGrowth extends AbstractElectricElementalTool implements IElectricItem {
 
     public ElectricHoeOfGrowth() {
-        super(1F, 4F, ThaumcraftMaterials.TOOLMAT_ELEMENTAL, Collections.emptySet());
+        super(1F, 0F, ThaumcraftMaterials.TOOLMAT_ELEMENTAL, Collections.emptySet());
     }
 
     @Override
@@ -33,44 +36,54 @@ public final class ElectricHoeOfGrowth extends AbstractElectricElementalTool imp
     }
 
     @Override
-    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+    public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         ItemStack held = player.getHeldItem(hand);
 
         if (!player.canPlayerEdit(pos.offset(facing), facing, held)) {
             return EnumActionResult.FAIL;
         } else {
-            int usingHoe = ForgeEventFactory.onHoeUse(held, player, worldIn, pos);
-            if (usingHoe != 0) {
-                return usingHoe > 0 ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
+            UseHoeEvent eventUseHoe = new UseHoeEvent(player, held, world, pos);
+            if (!MinecraftForge.EVENT_BUS.post(eventUseHoe)) {
+                if (eventUseHoe.getResult() == Event.Result.ALLOW) {
+                    // TODO Consume electricity
+                    return EnumActionResult.SUCCESS;
+                } else {
+                    return EnumActionResult.FAIL;
+                }
             }
 
-            IBlockState block = worldIn.getBlockState(pos);
+            IBlockState block = world.getBlockState(pos);
             Block blockType = block.getBlock();
 
             if (blockType instanceof IPlantable) {
-                int usingBonemeal = ForgeEventFactory.onApplyBonemeal(player, worldIn, pos, block, held, hand);
-                if (usingBonemeal != 0) {
-                    return usingBonemeal > 0 ? EnumActionResult.SUCCESS : EnumActionResult.FAIL;
+                BonemealEvent event = new BonemealEvent(player, world, pos, block, hand, held);
+                if (!MinecraftForge.EVENT_BUS.post(event)) {
+                    if (event.getResult() == Event.Result.ALLOW) {
+                        // TODO Consume electricity
+                        return EnumActionResult.SUCCESS;
+                    } else {
+                        return EnumActionResult.FAIL;
+                    }
                 }
 
                 IGrowable plant = (IGrowable)blockType;
-                if (plant.canGrow(worldIn, pos, block, worldIn.isRemote)) {
-                    if (!worldIn.isRemote) {
-                        if (plant.canUseBonemeal(worldIn, worldIn.rand, pos, block)) {
-                            plant.grow(worldIn, worldIn.rand, pos, block);
+                if (plant.canGrow(world, pos, block, world.isRemote)) {
+                    if (!world.isRemote) {
+                        if (plant.canUseBonemeal(world, world.rand, pos, block)) {
+                            plant.grow(world, world.rand, pos, block);
                         }
                         // TODO Consume electricity
                     }
                 }
             }
 
-            if (facing != EnumFacing.DOWN && worldIn.isAirBlock(pos.up())) {
+            if (facing != EnumFacing.DOWN && world.isAirBlock(pos.up())) {
                 // TODO 3x3 AoE tilling unless sneaking
                 if (blockType == Blocks.GRASS || blockType == Blocks.GRASS_PATH || blockType == Blocks.DIRT) {
-                    worldIn.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
-                    if (!worldIn.isRemote)
+                    world.playSound(player, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
+                    if (!world.isRemote)
                     {
-                        worldIn.setBlockState(pos, Blocks.FARMLAND.getDefaultState(), 11);
+                        world.setBlockState(pos, Blocks.FARMLAND.getDefaultState(), 11);
                         // TODO Consume electricity
                     }
                     return EnumActionResult.SUCCESS;
