@@ -2,6 +2,7 @@ package info.tritusk.electrothaumaturgy;
 
 import info.tritusk.electrothaumaturgy.module.device.VisReplenisher;
 import info.tritusk.electrothaumaturgy.module.device.VisReplenisherLogic;
+import info.tritusk.electrothaumaturgy.module.reactor.FrostCondensator;
 import info.tritusk.electrothaumaturgy.module.tools.elemental.ChainsawOfStream;
 import info.tritusk.electrothaumaturgy.module.tools.elemental.DrillOfCore;
 import info.tritusk.electrothaumaturgy.module.tools.elemental.ElectricHoeOfGrowth;
@@ -29,6 +30,7 @@ public final class ElectroThaumoRegistry {
     public static void onBlockRegistration(RegistryEvent.Register<Block> event) {
         event.getRegistry().registerAll(
                 new VisReplenisher()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
                         .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "vis_replenisher")
                         .setRegistryName(ElectroThaumaturgy.MOD_ID, "vis_replenisher")
         );
@@ -72,7 +74,12 @@ public final class ElectroThaumoRegistry {
                 new NanoSaberOfZephyr()
                         .setCreativeTab(ElectroThaumaturgy.TAB)
                         .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "nanosaber_of_zephyr")
-                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "nanosaber_of_zephyr")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "nanosaber_of_zephyr"),
+
+                new FrostCondensator()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "frost_condensator")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "frost_condensator")
         );
     }
 }
