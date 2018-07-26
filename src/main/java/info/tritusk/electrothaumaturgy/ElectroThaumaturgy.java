@@ -19,7 +19,7 @@ public final class ElectroThaumaturgy {
     public static final CreativeTabs TAB = new CreativeTabs(MOD_ID) {
         @Override
         public ItemStack getTabIconItem() {
-            return ItemStack.EMPTY;
+            return new ItemStack(ElectroThaumoObjects.DRILL_OF_CORE);
         }
     };
 }
