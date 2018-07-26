@@ -1,8 +1,12 @@
+itemGroup.electrothaumaturgy=Electrothaumaturgy
+
 item.electrothaumaturgy.electric_goggle.name=Electric Goggle
 item.electrothaumaturgy.electric_traveller_boots.name=Electric Boots of Traveller
 item.electrothaumaturgy.electric_scribing_tools.name=Electric Scribing Tools
 
-item.electrothaumaturgy.drill_of_core.name=Drill of Core
-item.electrothaumaturgy.chainsaw_of_stream.name=Chainsaw of Stream
-item.electrothaumaturgy.electric_hoe_of_growth.name=Electric Hoe of Growth
-item.electrothaumaturgy.nanosaber_of_zephyr.name=NanoSaber of Zephyr
+item.electrothaumaturgy.drill_of_core.name=Drill of the Core
+item.electrothaumaturgy.chainsaw_of_stream.name=Chainsaw of the Stream
+item.electrothaumaturgy.electric_hoe_of_growth.name=Electric Hoe of the Growth
+item.electrothaumaturgy.nanosaber_of_zephyr.name=NanoSaber of the Zephyr
+
+item.electrothaumaturgy.frost_condensator.name=Thaumiel Cryocondensator
