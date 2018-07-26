@@ -13,7 +13,7 @@ public class ElectricScribingTools extends Item implements IElectricItem, ISpeci
 
     @Override
     public void setDamage(ItemStack stack, int damage) {
-        // TODO We gonna have to figure out how to trick Thaumcraft to consume electricity, not item durability
+        // TODO We gonna have to figure out how to trick Thaumcraft to consume electricity, not items durability
         // TODO Probably, we need to file an issue ticket, if we really want a nice and clean implementation
         int disChargeAmount = 100 * (damage - this.getDamage(stack));
         if (disChargeAmount > 0) {

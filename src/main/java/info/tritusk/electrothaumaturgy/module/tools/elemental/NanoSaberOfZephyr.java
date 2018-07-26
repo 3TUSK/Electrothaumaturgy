@@ -24,7 +24,7 @@ import java.util.Collections;
 public final class NanoSaberOfZephyr extends AbstractElectricElementalTool implements IElectricItem {
 
     public NanoSaberOfZephyr() {
-        super(6F, 1.5F, ThaumcraftMaterials.TOOLMAT_ELEMENTAL, Collections.emptySet());
+        super(6F, 0.8F, ThaumcraftMaterials.TOOLMAT_ELEMENTAL, Collections.emptySet());
     }
 
     @Override

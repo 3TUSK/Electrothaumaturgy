@@ -18,7 +18,7 @@ import java.util.Collections;
 public final class DrillOfCore extends AbstractElectricElementalTool implements IElectricItem {
 
     public DrillOfCore() {
-        super(6.0F, 1.0F, ThaumcraftMaterials.TOOLMAT_ELEMENTAL, Collections.emptySet());
+        super(1.0F, -3F, ThaumcraftMaterials.TOOLMAT_ELEMENTAL, Collections.emptySet());
         setHarvestLevel("pickaxe", 4);
         setHarvestLevel("shovel", 4);
     }

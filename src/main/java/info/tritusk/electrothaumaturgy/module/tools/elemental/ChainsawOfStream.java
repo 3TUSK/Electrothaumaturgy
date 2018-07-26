@@ -30,7 +30,7 @@ import java.util.Random;
 public final class ChainsawOfStream extends AbstractElectricElementalTool implements IElectricItem {
 
     public ChainsawOfStream() {
-        super(10F, 1F, ThaumcraftMaterials.TOOLMAT_ELEMENTAL, Collections.emptySet());
+        super(6F, -3F, ThaumcraftMaterials.TOOLMAT_ELEMENTAL, Collections.emptySet());
         setHarvestLevel("axe", 4);
         setHarvestLevel("sword", 4);
     }
