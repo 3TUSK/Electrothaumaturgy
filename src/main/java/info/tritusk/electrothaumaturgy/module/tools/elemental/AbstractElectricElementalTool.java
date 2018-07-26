@@ -1,5 +1,6 @@
 package info.tritusk.electrothaumaturgy.module.tools.elemental;
 
+import ic2.api.item.ElectricItem;
 import ic2.api.item.IBoxable;
 import ic2.api.item.IElectricItem;
 import net.minecraft.block.Block;
@@ -41,6 +42,16 @@ abstract class AbstractElectricElementalTool extends ItemTool implements IElectr
     @Override
     public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
         return false;
+    }
+
+    @Override
+    public boolean showDurabilityBar(ItemStack stack) {
+        return ElectricItem.manager.getCharge(stack) < this.getMaxCharge(stack);
+    }
+
+    @Override
+    public double getDurabilityForDisplay(ItemStack stack) {
+        return 1 - (ElectricItem.manager.getCharge(stack) / this.getMaxCharge(stack));
     }
 
     @Override

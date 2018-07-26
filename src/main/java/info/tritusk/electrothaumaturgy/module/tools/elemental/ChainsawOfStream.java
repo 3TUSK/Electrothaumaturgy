@@ -136,10 +136,14 @@ public final class ChainsawOfStream extends AbstractElectricElementalTool implem
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (this.isInCreativeTab(tab)) {
-            ItemStack item = new ItemStack(this, 1, 0, null);
-            EnumInfusionEnchantment.addInfusionEnchantment(item, EnumInfusionEnchantment.COLLECTOR, 1);
-            EnumInfusionEnchantment.addInfusionEnchantment(item, EnumInfusionEnchantment.BURROWING, 1);
-            items.add(item);
+            ItemStack zeroCharge = new ItemStack(this, 1, 0, null);
+            EnumInfusionEnchantment.addInfusionEnchantment(zeroCharge, EnumInfusionEnchantment.COLLECTOR, 1);
+            EnumInfusionEnchantment.addInfusionEnchantment(zeroCharge, EnumInfusionEnchantment.BURROWING, 1);
+            items.add(zeroCharge);
+
+            ItemStack fullyCharged = zeroCharge.copy();
+            ElectricItem.manager.charge(fullyCharged, Double.MAX_VALUE, Integer.MAX_VALUE, true, false);
+            items.add(fullyCharged);
         }
     }
 }

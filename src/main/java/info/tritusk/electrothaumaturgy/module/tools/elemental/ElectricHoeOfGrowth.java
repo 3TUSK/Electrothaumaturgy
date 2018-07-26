@@ -1,9 +1,11 @@
 package info.tritusk.electrothaumaturgy.module.tools.elemental;
 
+import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -12,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -91,6 +94,17 @@ public final class ElectricHoeOfGrowth extends AbstractElectricElementalTool imp
             }
 
             return EnumActionResult.PASS;
+        }
+    }
+
+    @Override
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (this.isInCreativeTab(tab)) {
+            ItemStack zeroCharge = new ItemStack(this);
+            items.add(zeroCharge);
+            ItemStack fullyCharged = zeroCharge.copy();
+            ElectricItem.manager.charge(fullyCharged, Double.MAX_VALUE, Integer.MAX_VALUE, true, false);
+            items.add(fullyCharged);
         }
     }
 

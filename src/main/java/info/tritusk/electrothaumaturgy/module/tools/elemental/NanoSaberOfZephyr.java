@@ -77,9 +77,13 @@ public final class NanoSaberOfZephyr extends AbstractElectricElementalTool imple
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (this.isInCreativeTab(tab)) {
-            ItemStack item = new ItemStack(this, 1, 0, null);
-            EnumInfusionEnchantment.addInfusionEnchantment(item, EnumInfusionEnchantment.ARCING, 2);
-            items.add(item);
+            ItemStack zeroCharge = new ItemStack(this, 1, 0, null);
+            EnumInfusionEnchantment.addInfusionEnchantment(zeroCharge, EnumInfusionEnchantment.ARCING, 2);
+            items.add(zeroCharge);
+
+            ItemStack fullyCharged = zeroCharge.copy();
+            ElectricItem.manager.charge(fullyCharged, Double.MAX_VALUE, Integer.MAX_VALUE, true, false);
+            items.add(fullyCharged);
         }
     }
 }
