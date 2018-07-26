@@ -19,4 +19,9 @@ public final class ElectroThaumoObjects {
 
     public static final Item DRILL_OF_CORE = Items.AIR;
 
+    public static final Item FROST_CONDENSATOR = Items.AIR;
+
+    @GameRegistry.ObjectHolder("essentia_coolant_injector")
+    public static final Item ESSENTIA_RCI = Items.AIR;
+
 }

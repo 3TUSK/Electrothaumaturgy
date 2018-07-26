@@ -19,7 +19,7 @@ import thaumcraft.api.aspects.IEssentiaContainerItem;
 
 public final class FrostCondensator extends Item implements IEssentiaContainerItem, IReactorComponent {
 
-    private static final int MAX_ESSENTIA_AMOUNT = 1000;
+    static final int MAX_ESSENTIA_AMOUNT = 250;
 
     @Override
     public void processChamber(ItemStack item, IReactor reactor, int x, int y, boolean b) {
