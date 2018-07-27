@@ -1,21 +1,18 @@
 package info.tritusk.electrothaumaturgy.module.reactor;
 
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
+import info.tritusk.electrothaumaturgy.ElectricDeviceLogicBase;
 import info.tritusk.electrothaumaturgy.ElectroThaumoObjects;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.MinecraftForge;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 
-public final class EssentiaCoolantInjectorLogic extends TileEntity
+public final class EssentiaCoolantInjectorLogic extends ElectricDeviceLogicBase
         implements ITickable, IEnergySink, IAspectContainer {
 
     private static final int MAX_ENERGY = 32000, MAX_ESSENTIA = 1000;
@@ -26,8 +23,6 @@ public final class EssentiaCoolantInjectorLogic extends TileEntity
     private TileEntityNuclearReactorElectric attachedReactor;
 
     private int energy = 0;
-
-    private boolean isInEnergyNet;
 
     @Override
     public void update() {
@@ -52,23 +47,6 @@ public final class EssentiaCoolantInjectorLogic extends TileEntity
                     ((FrostCondensator)reactorComponent.getItem()).setAspects(reactorComponent, componentStorage);
                 }
             }
-        }
-    }
-
-    @Override
-    public void invalidate() {
-        if (!getWorld().isRemote && isInEnergyNet) {
-            isInEnergyNet = false;
-            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
-        }
-        super.invalidate();
-    }
-
-    @Override
-    public void onLoad() {
-        if (!getWorld().isRemote && !isInEnergyNet) {
-            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-            isInEnergyNet = true;
         }
     }
 

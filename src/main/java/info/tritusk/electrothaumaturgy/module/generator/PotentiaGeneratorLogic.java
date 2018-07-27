@@ -1,19 +1,17 @@
 package info.tritusk.electrothaumaturgy.module.generator;
 
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergySource;
+import info.tritusk.electrothaumaturgy.ElectricDeviceLogicBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.MinecraftForge;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
 import thaumcraft.api.aspects.IEssentiaTransport;
 
-public final class PotentiaGeneratorLogic extends TileEntity
+public final class PotentiaGeneratorLogic extends ElectricDeviceLogicBase
         implements ITickable, IEnergySource, IAspectContainer, IEssentiaTransport {
 
     private static final int MAX_ESSENTIA = 250;
@@ -21,8 +19,6 @@ public final class PotentiaGeneratorLogic extends TileEntity
     private int essentiaStorage;
     // TODO Do we really need a buffer? we could do some "lingering" design instead.
     private int energyBuffer;
-
-    private boolean isInEnergyNet;
 
     @Override
     public void update() {
@@ -54,23 +50,6 @@ public final class PotentiaGeneratorLogic extends TileEntity
                     }
                 }
             }
-        }
-    }
-
-    @Override
-    public void invalidate() {
-        if (!getWorld().isRemote && isInEnergyNet) {
-            isInEnergyNet = false;
-            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
-        }
-        super.invalidate();
-    }
-
-    @Override
-    public void onLoad() {
-        if (!getWorld().isRemote && !isInEnergyNet) {
-            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-            isInEnergyNet = true;
         }
     }
 

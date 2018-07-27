@@ -1,18 +1,15 @@
 package info.tritusk.electrothaumaturgy.module.device;
 
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
-import net.minecraft.tileentity.TileEntity;
+import info.tritusk.electrothaumaturgy.ElectricDeviceLogicBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidTank;
 import thaumcraft.api.aura.AuraHelper;
 
-public class FluxNormalizerLogic extends TileEntity implements ITickable, IEnergySink {
+public class FluxNormalizerLogic extends ElectricDeviceLogicBase implements ITickable, IEnergySink {
 
     private static final int MAX_ENERGY = 200000;
 
@@ -21,8 +18,6 @@ public class FluxNormalizerLogic extends TileEntity implements ITickable, IEnerg
     private float fluxReservoir = 0.0F;
 
     private int energy = 0;
-
-    private boolean isInEnergyNet;
 
     @Override
     public void update() {
@@ -40,23 +35,6 @@ public class FluxNormalizerLogic extends TileEntity implements ITickable, IEnerg
             }
         }
 
-    }
-
-    @Override
-    public void invalidate() {
-        if (!getWorld().isRemote && isInEnergyNet) {
-            isInEnergyNet = false;
-            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
-        }
-        super.invalidate();
-    }
-
-    @Override
-    public void onLoad() {
-        if (!getWorld().isRemote && !isInEnergyNet) {
-            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-            isInEnergyNet = true;
-        }
     }
 
     @Override

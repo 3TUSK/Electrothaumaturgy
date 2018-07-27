@@ -1,25 +1,20 @@
 package info.tritusk.electrothaumaturgy.module.device;
 
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
-import net.minecraft.tileentity.TileEntity;
+import info.tritusk.electrothaumaturgy.ElectricDeviceLogicBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidTank;
 import thaumcraft.api.aura.AuraHelper;
 
-public final class VisReplenisherLogic extends TileEntity implements ITickable, IEnergySink {
+public final class VisReplenisherLogic extends ElectricDeviceLogicBase implements ITickable, IEnergySink {
 
     private static final int MAX_ENERGY = 200000;
 
     private FluidTank tank = new FluidTank(8000);
 
     private int energy = 0;
-
-    private boolean isInEnergyNet;
 
     @Override
     public void update() {
@@ -36,23 +31,6 @@ public final class VisReplenisherLogic extends TileEntity implements ITickable, 
             if (this.getWorld().rand.nextInt(10) == 0) {
                 AuraHelper.addVis(this.getWorld(), this.getPos(), 1F);
             }
-        }
-    }
-
-    @Override
-    public void invalidate() {
-        if (!getWorld().isRemote && isInEnergyNet) {
-            isInEnergyNet = false;
-            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
-        }
-        super.invalidate();
-    }
-
-    @Override
-    public void onLoad() {
-        if (!getWorld().isRemote && !isInEnergyNet) {
-            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
-            isInEnergyNet = true;
         }
     }
 
