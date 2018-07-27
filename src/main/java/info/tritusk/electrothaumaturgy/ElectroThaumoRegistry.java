@@ -2,6 +2,8 @@ package info.tritusk.electrothaumaturgy;
 
 import info.tritusk.electrothaumaturgy.module.device.VisReplenisher;
 import info.tritusk.electrothaumaturgy.module.device.VisReplenisherLogic;
+import info.tritusk.electrothaumaturgy.module.generator.PotentiaGenerator;
+import info.tritusk.electrothaumaturgy.module.generator.PotentiaGeneratorLogic;
 import info.tritusk.electrothaumaturgy.module.reactor.FrostCondensator;
 import info.tritusk.electrothaumaturgy.module.tools.elemental.ChainsawOfStream;
 import info.tritusk.electrothaumaturgy.module.tools.elemental.DrillOfCore;
@@ -32,10 +34,16 @@ public final class ElectroThaumoRegistry {
                 new VisReplenisher()
                         .setCreativeTab(ElectroThaumaturgy.TAB)
                         .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "vis_replenisher")
-                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "vis_replenisher")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "vis_replenisher"),
+
+                new PotentiaGenerator()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "potentia_generator")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "potentia_generator")
         );
 
         GameRegistry.registerTileEntity(VisReplenisherLogic.class, new ResourceLocation(ElectroThaumaturgy.MOD_ID, "vis_replenisher"));
+        GameRegistry.registerTileEntity(PotentiaGeneratorLogic.class, new ResourceLocation(ElectroThaumaturgy.MOD_ID, "potentia_generator"));
     }
 
     @SubscribeEvent
@@ -45,6 +53,10 @@ public final class ElectroThaumoRegistry {
                         .setCreativeTab(ElectroThaumaturgy.TAB)
                         .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "vis_replenisher")
                         .setRegistryName(ElectroThaumaturgy.MOD_ID, "vis_replenisher"),
+                new ItemBlock(ElectroThaumoObjects.POTENTIA_GENERATOR)
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "potentia_generator")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "potentia_generator"),
 
                 new ElectricGoggle()
                         .setCreativeTab(ElectroThaumaturgy.TAB)

@@ -15,6 +15,8 @@ public final class ElectroThaumoObjects {
 
     public static final Block VIS_REPLENISHER = Blocks.AIR;
 
+    public static final Block POTENTIA_GENERATOR = Blocks.AIR;
+
     public static final Item CHAINSAW_OF_STREAM = Items.AIR;
 
     public static final Item DRILL_OF_CORE = Items.AIR;

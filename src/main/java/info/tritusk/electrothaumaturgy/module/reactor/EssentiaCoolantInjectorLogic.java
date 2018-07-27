@@ -1,5 +1,7 @@
 package info.tritusk.electrothaumaturgy.module.reactor;
 
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
@@ -8,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.MinecraftForge;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IAspectContainer;
@@ -23,6 +26,8 @@ public final class EssentiaCoolantInjectorLogic extends TileEntity
     private TileEntityNuclearReactorElectric attachedReactor;
 
     private int energy = 0;
+
+    private boolean isInEnergyNet;
 
     @Override
     public void update() {
@@ -47,6 +52,23 @@ public final class EssentiaCoolantInjectorLogic extends TileEntity
                     ((FrostCondensator)reactorComponent.getItem()).setAspects(reactorComponent, componentStorage);
                 }
             }
+        }
+    }
+
+    @Override
+    public void invalidate() {
+        if (!getWorld().isRemote && isInEnergyNet) {
+            isInEnergyNet = false;
+            MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+        }
+        super.invalidate();
+    }
+
+    @Override
+    public void onLoad() {
+        if (!getWorld().isRemote && !isInEnergyNet) {
+            MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+            isInEnergyNet = true;
         }
     }
 
@@ -88,6 +110,10 @@ public final class EssentiaCoolantInjectorLogic extends TileEntity
 
     @Override
     public int addToContainer(Aspect aspect, int increment) {
+        if (aspect != Aspect.COLD) {
+            return increment;
+        }
+
         this.essentiaAmount += increment;
         int diff = Math.max(0, essentiaAmount - MAX_ESSENTIA);
         if (diff > 0) {
@@ -98,12 +124,13 @@ public final class EssentiaCoolantInjectorLogic extends TileEntity
 
     @Override
     public boolean takeFromContainer(Aspect aspect, int amount) {
+        // You cannot take essentia out of this container.
         return false;
     }
 
     @Override
     public boolean doesContainerContainAmount(Aspect aspect, int i) {
-        return essentiaAmount >= i;
+        return aspect == Aspect.COLD && essentiaAmount >= i;
     }
 
     @Override

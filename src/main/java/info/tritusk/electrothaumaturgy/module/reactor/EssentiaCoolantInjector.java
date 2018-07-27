@@ -34,6 +34,11 @@ public final class EssentiaCoolantInjector extends BlockHorizontal implements IW
     }
 
     @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).getHorizontalIndex();
+    }
+
+    @Override
     public EnumFacing getFacing(World world, BlockPos pos) {
         return world.getBlockState(pos).getValue(FACING);
     }
