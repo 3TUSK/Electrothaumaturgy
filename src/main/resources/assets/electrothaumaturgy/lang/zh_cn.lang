@@ -1,5 +1,17 @@
 itemGroup.electrothaumaturgy=电子神秘学
 
+tile.electrothaumaturgy.magic_heat_generator.name=魔法热能发生器
+tile.electrothaumaturgy.magic_kinetic_generator.name=魔法动能发生器
+tile.electrothaumaturgy.potentia_generator.name=Potentia 源质发电机
+
+tile.electrothaumaturgy.paper_mill.name=造纸机
+
+tile.electrothaumaturgy.electrostatic_harmonizer=静电协调器
+tile.electrothaumaturgy.flux_normalizer.name=咒波净化设备
+tile.electrothaumaturgy.vis_replenisher.name=灵气再生仪
+
+tile.electrothaumaturgy.essentia_coolant_injector=源质反应堆冷却剂注入器
+
 item.electrothaumaturgy.electric_goggle.name=电力揭示之护目镜
 item.electrothaumaturgy.electric_traveller_boots.name=电动旅行者之靴
 item.electrothaumaturgy.electric_scribing_tools.name=电子书写工具

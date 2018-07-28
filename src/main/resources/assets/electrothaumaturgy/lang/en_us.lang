@@ -1,5 +1,17 @@
 itemGroup.electrothaumaturgy=Electrothaumaturgy
 
+tile.electrothaumaturgy.magic_heat_generator.name=Magic Heat Generator
+tile.electrothaumaturgy.magic_kinetic_generator.name=Magic Kinetic Generator
+tile.electrothaumaturgy.potentia_generator.name=Potentia Generator
+
+tile.electrothaumaturgy.paper_mill.name=Paper Mill
+
+tile.electrothaumaturgy.electrostatic_harmonizer=Electristatic Harmonizer
+tile.electrothaumaturgy.flux_normalizer.name=Flux Normalizer
+tile.electrothaumaturgy.vis_replenisher.name=Vis Replenisher
+
+tile.electrothaumaturgy.essentia_coolant_injector=Essentia R.C.I.
+
 item.electrothaumaturgy.electric_goggle.name=Electric Goggle
 item.electrothaumaturgy.electric_traveller_boots.name=Electric Boots of Traveller
 item.electrothaumaturgy.electric_scribing_tools.name=Electric Scribing Tools
