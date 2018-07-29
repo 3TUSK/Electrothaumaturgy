@@ -1,9 +1,21 @@
 package info.tritusk.electrothaumaturgy;
 
+import info.tritusk.electrothaumaturgy.module.device.ElectrostaticHarmonizer;
+import info.tritusk.electrothaumaturgy.module.device.ElectrostaticHarmonizerLogic;
+import info.tritusk.electrothaumaturgy.module.device.FluxNormalizer;
+import info.tritusk.electrothaumaturgy.module.device.FluxNormalizerLogic;
 import info.tritusk.electrothaumaturgy.module.device.VisReplenisher;
 import info.tritusk.electrothaumaturgy.module.device.VisReplenisherLogic;
+import info.tritusk.electrothaumaturgy.module.generator.MagicHeatGenerator;
+import info.tritusk.electrothaumaturgy.module.generator.MagicHeatGeneratorLogic;
+import info.tritusk.electrothaumaturgy.module.generator.MagicKineticGenerator;
+import info.tritusk.electrothaumaturgy.module.generator.MagicKineticGeneratorLogic;
 import info.tritusk.electrothaumaturgy.module.generator.PotentiaGenerator;
 import info.tritusk.electrothaumaturgy.module.generator.PotentiaGeneratorLogic;
+import info.tritusk.electrothaumaturgy.module.processing.PaperMill;
+import info.tritusk.electrothaumaturgy.module.processing.PaperMillLogic;
+import info.tritusk.electrothaumaturgy.module.reactor.EssentiaCoolantInjector;
+import info.tritusk.electrothaumaturgy.module.reactor.EssentiaCoolantInjectorLogic;
 import info.tritusk.electrothaumaturgy.module.reactor.FrostCondensator;
 import info.tritusk.electrothaumaturgy.module.tools.elemental.ChainsawOfStream;
 import info.tritusk.electrothaumaturgy.module.tools.elemental.DrillOfCore;
@@ -31,19 +43,54 @@ public final class ElectroThaumoRegistry {
     @SubscribeEvent
     public static void onBlockRegistration(RegistryEvent.Register<Block> event) {
         event.getRegistry().registerAll(
+                new ElectrostaticHarmonizer()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "electrostatic_harmonizer")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "electrostatic_harmonizer"),
+                new FluxNormalizer()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "flux_normalizer")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "flux_normalizer"),
                 new VisReplenisher()
                         .setCreativeTab(ElectroThaumaturgy.TAB)
                         .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "vis_replenisher")
                         .setRegistryName(ElectroThaumaturgy.MOD_ID, "vis_replenisher"),
 
+                new MagicHeatGenerator()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "magic_heat_generator")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "magic_heat_generator"),
+                new MagicKineticGenerator()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "magic_kinetic_generator")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "magic_kinetic_generator"),
                 new PotentiaGenerator()
                         .setCreativeTab(ElectroThaumaturgy.TAB)
                         .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "potentia_generator")
-                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "potentia_generator")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "potentia_generator"),
+
+                new PaperMill()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "paper_mill")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "paper_mill"),
+
+                new EssentiaCoolantInjector()
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "essentia_coolant_injector")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "essentia_coolant_injector")
         );
 
+        GameRegistry.registerTileEntity(ElectrostaticHarmonizerLogic.class, new ResourceLocation(ElectroThaumaturgy.MOD_ID, "electrostatic_harmonizer"));
+        GameRegistry.registerTileEntity(FluxNormalizerLogic.class, new ResourceLocation(ElectroThaumaturgy.MOD_ID, "flux_normalizer"));
         GameRegistry.registerTileEntity(VisReplenisherLogic.class, new ResourceLocation(ElectroThaumaturgy.MOD_ID, "vis_replenisher"));
+
+        GameRegistry.registerTileEntity(MagicHeatGeneratorLogic.class, new ResourceLocation(ElectroThaumaturgy.MOD_ID, "magic_heat_generator"));
+        GameRegistry.registerTileEntity(MagicKineticGeneratorLogic.class, new ResourceLocation(ElectroThaumaturgy.MOD_ID, "magic_kinetic_generator"));
         GameRegistry.registerTileEntity(PotentiaGeneratorLogic.class, new ResourceLocation(ElectroThaumaturgy.MOD_ID, "potentia_generator"));
+
+        GameRegistry.registerTileEntity(PaperMillLogic.class, new ResourceLocation(ElectroThaumaturgy.MOD_ID, "paper_mill"));
+
+        GameRegistry.registerTileEntity(EssentiaCoolantInjectorLogic.class, new ResourceLocation(ElectroThaumaturgy.MOD_ID, "essentia_coolant_injector"));
     }
 
     @SubscribeEvent
