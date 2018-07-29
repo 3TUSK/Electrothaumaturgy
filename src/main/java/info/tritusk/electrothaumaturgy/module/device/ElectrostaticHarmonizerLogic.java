@@ -34,24 +34,35 @@ public final class ElectrostaticHarmonizerLogic extends ElectricDeviceLogicBase 
             return;
         }
 
-        for (BlockPos probing : BlockPos.getAllInBox(this.getPos().add(-4, -4, -4), this.getPos().add(4, 4, 4))) {
-            TileEntity tile = this.getWorld().getTileEntity(probing);
-            if (tile instanceof IStabilizable) {
-                IStabilizable target = (IStabilizable) tile;
-                if (this.getWorld().rand.nextInt(20) == 0) {
+        // 5% chance to either add a bit stability, or causing electric shock to nearby entities
+        // The if check comes first so that we can save some time
+        if (this.getWorld().rand.nextInt(20) == 0) {
+            for (BlockPos probing : BlockPos.getAllInBox(this.getPos().add(-4, -4, -4), this.getPos().add(4, 4, 4))) {
+                TileEntity tile = this.getWorld().getTileEntity(probing);
+                if (tile instanceof IStabilizable) {
+                    IStabilizable target = (IStabilizable) tile;
                     float sinResult = MathHelper.sin((float) Math.toRadians(this.world.getWorldTime() % 360));
-                    if (MathHelper.abs(sinResult) < 1E-5F) {
-                        if (this.getWorld().rand.nextInt(100) == 0 && this.getWorld().provider.getMoonPhase(this.getWorld().getWorldTime()) == 0) {
-                            target.addStability(100);
-                        } else {
-                            target.addStability(8);
+                    if (MathHelper.abs(sinResult) < 1E-8F) { // epsilon equals to 0F
+                        if (this.getWorld().rand.nextInt(100) == 0) { // additional 1%, builds up to 0.05%
+                            // Requiring full-moon in order to get bonus stability.
+                            // TODO requiring sunny day
+                            // TODO requiring night
+                            // TODO What about new moon? 1/4? 3/4? Crescent?
+                            if (this.getWorld().provider.getMoonPhase(this.getWorld().getWorldTime()) == 0) {
+                                target.addStability(100);
+                            } else {
+                                target.addStability(8);
+                            }
                         }
                     } else if (sinResult > 0) {
                         target.addStability(1);
                     } else {
+                        // You know, we create some weird energy field around the target in order to stabilize it.
+                        // It perfectly makes sense that such energy field may cause damage to nearby living entities.
+                        // TODO Using my own damage source?
                         List<? extends EntityLivingBase> victims = this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(probing.add(-5, -5, -5), probing.add(5, 5, 5)));
                         for (EntityLivingBase victim : victims) {
-                            victim.attackEntityFrom(Info.DMG_ELECTRIC, MathHelper.cos((float) Math.toRadians(this.world.getWorldTime() % 360)));
+                            victim.attackEntityFrom(Info.DMG_ELECTRIC, 4 * MathHelper.cos((float) Math.toRadians(this.world.getWorldTime() % 360)));
                         }
                     }
                 }
@@ -61,7 +72,7 @@ public final class ElectrostaticHarmonizerLogic extends ElectricDeviceLogicBase 
 
     @Override
     public double getDemandedEnergy() {
-        return 0;
+        return 128D;
     }
 
     @Override
@@ -70,12 +81,13 @@ public final class ElectrostaticHarmonizerLogic extends ElectricDeviceLogicBase 
     }
 
     @Override
-    public double injectEnergy(EnumFacing facing, double v, double v1) {
+    public double injectEnergy(EnumFacing facing, double amount, double voltage) {
+        this.energy += amount;
         return 0;
     }
 
     @Override
-    public boolean acceptsEnergyFrom(IEnergyEmitter iEnergyEmitter, EnumFacing enumFacing) {
+    public boolean acceptsEnergyFrom(IEnergyEmitter emitter, EnumFacing sideFrom) {
         return true;
     }
 
