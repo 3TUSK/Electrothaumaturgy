@@ -6,11 +6,11 @@ tile.electrothaumaturgy.potentia_generator.name=Potentia Generator
 
 tile.electrothaumaturgy.paper_mill.name=Paper Mill
 
-tile.electrothaumaturgy.electrostatic_harmonizer=Electrostatic Harmonizer
+tile.electrothaumaturgy.electrostatic_harmonizer.name=Electrostatic Harmonizer
 tile.electrothaumaturgy.flux_normalizer.name=Flux Normalizer
 tile.electrothaumaturgy.vis_replenisher.name=Vis Replenisher
 
-tile.electrothaumaturgy.essentia_coolant_injector=Essentia R.C.I.
+tile.electrothaumaturgy.essentia_coolant_injector.name=Reactor Coolant Injector (Gelum Essentia)
 
 item.electrothaumaturgy.electric_goggle.name=Electric Goggle
 item.electrothaumaturgy.electric_traveller_boots.name=Electric Boots of Traveller
