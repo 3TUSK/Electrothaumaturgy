@@ -22,7 +22,7 @@ public class PaperMillLogic extends TileEntity implements ITickable, IEnergySink
     private static final int MAX_ENERGY = 8000, MAX_ESSENTIA = 500;
 
     private int energy, essentia;
-    private SingleSlotItemHandler invnetory = new SingleSlotItemHandler();
+    private SingleSlotItemHandler inventory = new SingleSlotItemHandler();
 
     @Override
     public void update() {
@@ -33,13 +33,13 @@ public class PaperMillLogic extends TileEntity implements ITickable, IEnergySink
         if (essentia >= 8 && energy >= 200) {
             essentia -= 8;
             energy -= 200;
-            ItemStack currentContent = invnetory.getRawContent();
+            ItemStack currentContent = inventory.getRawContent();
             if (currentContent.isEmpty()) {
                 currentContent = new ItemStack(Items.PAPER);
             } else if (currentContent.getItem() == Items.PAPER) {
                 currentContent.grow(1);
             }
-            invnetory.setRawContent(currentContent);
+            inventory.setRawContent(currentContent);
         }
     }
 
@@ -52,7 +52,7 @@ public class PaperMillLogic extends TileEntity implements ITickable, IEnergySink
     @Override
     public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
         if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.invnetory);
+            return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(this.inventory);
         } else {
             return super.getCapability(capability, facing);
         }
