@@ -1,4 +1,4 @@
-package info.tritusk.electrothaumaturgy;
+package info.tritusk.electrothaumaturgy.internal;
 
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;

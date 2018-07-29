@@ -3,7 +3,7 @@ package info.tritusk.electrothaumaturgy.module.reactor;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import ic2.core.block.reactor.tileentity.TileEntityNuclearReactorElectric;
-import info.tritusk.electrothaumaturgy.ElectricDeviceLogicBase;
+import info.tritusk.electrothaumaturgy.internal.ElectricDeviceLogicBase;
 import info.tritusk.electrothaumaturgy.ElectroThaumoObjects;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;

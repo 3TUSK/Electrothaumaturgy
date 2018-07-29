@@ -2,7 +2,7 @@ package info.tritusk.electrothaumaturgy.module.device;
 
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
-import info.tritusk.electrothaumaturgy.ElectricDeviceLogicBase;
+import info.tritusk.electrothaumaturgy.internal.ElectricDeviceLogicBase;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fluids.FluidTank;

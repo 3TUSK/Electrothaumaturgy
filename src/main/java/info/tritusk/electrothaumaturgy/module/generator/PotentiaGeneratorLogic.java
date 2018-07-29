@@ -2,7 +2,7 @@ package info.tritusk.electrothaumaturgy.module.generator;
 
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergySource;
-import info.tritusk.electrothaumaturgy.ElectricDeviceLogicBase;
+import info.tritusk.electrothaumaturgy.internal.ElectricDeviceLogicBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;

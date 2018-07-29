@@ -3,7 +3,7 @@ package info.tritusk.electrothaumaturgy.module.device;
 import ic2.api.energy.tile.IEnergyEmitter;
 import ic2.api.energy.tile.IEnergySink;
 import ic2.api.info.Info;
-import info.tritusk.electrothaumaturgy.ElectricDeviceLogicBase;
+import info.tritusk.electrothaumaturgy.internal.ElectricDeviceLogicBase;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
