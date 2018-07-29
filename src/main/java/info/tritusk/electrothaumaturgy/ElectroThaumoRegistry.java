@@ -96,14 +96,41 @@ public final class ElectroThaumoRegistry {
     @SubscribeEvent
     public static void onItemRegistration(RegistryEvent.Register<Item> event) {
         event.getRegistry().registerAll(
+                new ItemBlock(ElectroThaumoObjects.ELECTROSTATIC_HARMONIZER)
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "electrostatic_harmonizer")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "electrostatic_harmonizer"),
+                new ItemBlock(ElectroThaumoObjects.FLUX_NORMALIZER)
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "flux_normalizer")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "flux_normalizer"),
                 new ItemBlock(ElectroThaumoObjects.VIS_REPLENISHER)
                         .setCreativeTab(ElectroThaumaturgy.TAB)
                         .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "vis_replenisher")
                         .setRegistryName(ElectroThaumaturgy.MOD_ID, "vis_replenisher"),
+
+                new ItemBlock(ElectroThaumoObjects.MAGIC_HEAT_GENERATOR)
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "magic_heat_generator")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "magic_heat_generator"),
+                new ItemBlock(ElectroThaumoObjects.MAGIC_KINETIC_GENERATOR)
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "magic_kinetic_generator")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "magic_kinetic_generator"),
                 new ItemBlock(ElectroThaumoObjects.POTENTIA_GENERATOR)
                         .setCreativeTab(ElectroThaumaturgy.TAB)
                         .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "potentia_generator")
                         .setRegistryName(ElectroThaumaturgy.MOD_ID, "potentia_generator"),
+
+                new ItemBlock(ElectroThaumoObjects.PAPER_MILL)
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "paper_mill")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "paper_mill"),
+
+                new ItemBlock(ElectroThaumoObjects.ESSENTIA_COOLANT_INJECTOR)
+                        .setCreativeTab(ElectroThaumaturgy.TAB)
+                        .setUnlocalizedName(ElectroThaumaturgy.MOD_ID + '.' + "essentia_coolant_injector")
+                        .setRegistryName(ElectroThaumaturgy.MOD_ID, "essentia_coolant_injector"),
 
                 new ElectricGoggle()
                         .setCreativeTab(ElectroThaumaturgy.TAB)
