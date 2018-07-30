@@ -17,7 +17,7 @@ import java.util.List;
 
 public final class ElectrostaticHarmonizerLogic extends ElectricDeviceLogicBase implements IEnergySink, ITickable {
 
-    private int energy;
+    boolean charged;
 
     @Override
     public void update() {
@@ -25,12 +25,18 @@ public final class ElectrostaticHarmonizerLogic extends ElectricDeviceLogicBase 
             return;
         }
 
-        if ((energy -= 32) <= 0) {
-            energy = 0;
+        if (!charged) {
             return;
         }
 
+        charged = false;
+
         if (this.getWorld().rand.nextInt(10) > 0) {
+            return;
+        }
+
+        // Special effect is only available during night time
+        if (this.getWorld().isDaytime()) {
             return;
         }
 
@@ -44,11 +50,12 @@ public final class ElectrostaticHarmonizerLogic extends ElectricDeviceLogicBase 
                     float sinResult = MathHelper.sin((float) Math.toRadians(this.world.getWorldTime() % 360));
                     if (MathHelper.abs(sinResult) < 1E-8F) { // epsilon equals to 0F
                         if (this.getWorld().rand.nextInt(100) == 0) { // additional 1%, builds up to 0.05%
-                            // Requiring full-moon in order to get bonus stability.
-                            // TODO requiring sunny day
-                            // TODO requiring night
+                            // Requiring a sunny night with full-moon in order to get bonus stability.
                             // TODO What about new moon? 1/4? 3/4? Crescent?
-                            if (this.getWorld().provider.getMoonPhase(this.getWorld().getWorldTime()) == 0) {
+                            if (this.getWorld().provider.getMoonPhase(this.getWorld().getWorldTime()) == 0
+                                    && !this.getWorld().isRaining()
+                                    && !this.getWorld().isThundering()
+                                    && !this.getWorld().isDaytime()) {
                                 target.addStability(100);
                             } else {
                                 target.addStability(8);
@@ -62,7 +69,7 @@ public final class ElectrostaticHarmonizerLogic extends ElectricDeviceLogicBase 
                         // TODO Using my own damage source?
                         List<? extends EntityLivingBase> victims = this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(probing.add(-5, -5, -5), probing.add(5, 5, 5)));
                         for (EntityLivingBase victim : victims) {
-                            victim.attackEntityFrom(Info.DMG_ELECTRIC, 4 * MathHelper.cos((float) Math.toRadians(this.world.getWorldTime() % 360)));
+                            victim.attackEntityFrom(Info.DMG_ELECTRIC, (float) Math.exp(2 * MathHelper.cos((float) Math.toRadians(this.world.getWorldTime() % 360))));
                         }
                     }
                 }
@@ -77,12 +84,12 @@ public final class ElectrostaticHarmonizerLogic extends ElectricDeviceLogicBase 
 
     @Override
     public int getSinkTier() {
-        return 1;
+        return 2;
     }
 
     @Override
     public double injectEnergy(EnumFacing facing, double amount, double voltage) {
-        this.energy += amount;
+        this.charged = true;
         return 0;
     }
 

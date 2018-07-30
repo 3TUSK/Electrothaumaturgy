@@ -17,14 +17,12 @@ public class ElectrostaticHarmonizer extends Block implements IInfusionStabilise
 
     @Override
     public boolean canStabaliseInfusion(World world, BlockPos pos) {
-        // Only effective when it's full moon
-        if (world.provider.getMoonPhase(world.getWorldTime()) == 0) {
-            TileEntity tile = world.getTileEntity(pos);
-            if (tile instanceof ElectrostaticHarmonizerLogic) {
-                return ((ElectrostaticHarmonizerLogic) tile).getDemandedEnergy() < 0;
-            }
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof ElectrostaticHarmonizerLogic) {
+            return ((ElectrostaticHarmonizerLogic) tile).charged;
+        } else {
+            return false;
         }
-        return false;
     }
 
     @Override

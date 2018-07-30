@@ -1,0 +1,4 @@
+@ParametersAreNonnullByDefault
+package info.tritusk.electrothaumaturgy.module.device;
+
+import javax.annotation.ParametersAreNonnullByDefault;
