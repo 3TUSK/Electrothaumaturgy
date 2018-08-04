@@ -23,13 +23,15 @@ public final class VisReplenisherLogic extends ElectricDeviceLogicBase implement
         }
 
         // 500 EU + 20 mB UU-Matter == 10% chance of restoring 1.0 vis.
-        // TODO Higher price?
-        // TODO: Do we need some flux leakage to balance it? After all, in theory, they are the same thing.
+        // TODO Higher price, like continuous energy consumption?
         if (energy >= 500 && tank.drain(20, false) != null) {
             energy -= 500;
             tank.drain(20, true);
-            if (this.getWorld().rand.nextInt(10) == 0) {
+            int draw = this.getWorld().rand.nextInt(10);
+            if (draw == 0) {
                 AuraHelper.addVis(this.getWorld(), this.getPos(), 1F);
+            } else if ((draw & 3) == 0) {
+                AuraHelper.polluteAura(this.getWorld(), this.getPos(), .2F, (draw & 2) == 0);
             }
         }
     }

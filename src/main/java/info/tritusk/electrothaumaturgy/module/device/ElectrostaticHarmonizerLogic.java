@@ -50,7 +50,7 @@ public final class ElectrostaticHarmonizerLogic extends ElectricDeviceLogicBase 
                     float sinResult = MathHelper.sin((float) Math.toRadians(this.world.getWorldTime() % 360));
                     if (MathHelper.abs(sinResult) < 1E-8F) { // epsilon equals to 0F
                         if (this.getWorld().rand.nextInt(100) == 0) { // additional 1%, builds up to 0.05%
-                            // Requiring a sunny night with full-moon in order to get bonus stability.
+                            // Requiring a sunny night with full-moon in order to get the big bonus stability.
                             // TODO What about new moon? 1/4? 3/4? Crescent?
                             if (this.getWorld().provider.getMoonPhase(this.getWorld().getWorldTime()) == 0
                                     && !this.getWorld().isRaining()
@@ -68,7 +68,7 @@ public final class ElectrostaticHarmonizerLogic extends ElectricDeviceLogicBase 
                         // It perfectly makes sense that such energy field may cause damage to nearby living entities.
                         // TODO Using my own damage source?
                         List<? extends EntityLivingBase> victims = this.getWorld().getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(probing.add(-5, -5, -5), probing.add(5, 5, 5)));
-                        for (EntityLivingBase victim : victims) {
+                        for (EntityLivingBase victim : victims) { // e^(2 * cos(worldTime % 360)), where the cos accepts degrees
                             victim.attackEntityFrom(Info.DMG_ELECTRIC, (float) Math.exp(2 * MathHelper.cos((float) Math.toRadians(this.world.getWorldTime() % 360))));
                         }
                     }
