@@ -1,0 +1,18 @@
+{
+  "entries": [
+    {
+      "key": "ET_ORIGIN",
+      "name": "electrothaumaturgy.research.origin.title",
+      "icons": [ "electrothaumaturgy:textures/items/drill_of_core.png" ],
+      "category": "ELECTROTHAUMATURGY",
+      "parents": [ "BASEARTIFICE" ],
+      "meta": [ "ROUND" ],
+      "location": [ 0, 0 ],
+      "stages": [
+        {
+          "text": "electrothaumaturgy.research.origin.text.1"
+        }
+      ]
+    }
+  ]
+}
